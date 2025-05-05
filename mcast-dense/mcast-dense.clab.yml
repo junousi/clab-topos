@@ -1,0 +1,143 @@
+---
+name: mcast-dense
+mgmt:
+  bridge: virbr0
+  ipv4-subnet: 192.168.122.0/24
+topology:
+  defaults:
+    config:
+      vars:
+        # Due to strict checking there doesn't seem to be a way to inline (embed)
+        # the configs into a YAML variable with a neat 0-space indent. In any case
+        # chucking the configs here to keep the "nodes:" section more compact.
+        rtr1-config: &rtr1-config |
+          interfaces {
+              ge-0/0/0 {
+                  unit 0 {
+                      family inet {
+                          address 172.16.0.1/24;
+                      }
+                  }
+              }
+              ge-0/0/1 {
+                  unit 0 {
+                      family inet {
+                          address 1.2.3.1/24;
+                      }
+                  }
+              }
+          }
+          policy-options {
+              policy-statement direct {
+                  term d {
+                      from protocol direct;
+                      then accept;
+                  }
+              }
+          }
+          routing-options {
+              router-id 1.1.1.1;
+          }
+          protocols {
+              ospf {
+                  area 0.0.0.0 {
+                      interface ge-0/0/0.0;
+                  }
+                  export direct;
+              }
+              pim {
+                  interface fxp0.0 {
+                      disable;
+                  }
+                  interface ge-0/0/0.0 {
+                      mode dense;
+                  }
+                  interface ge-0/0/1.0 {
+                      mode dense;
+                  }
+              }
+          }
+        rtr2-config: &rtr2-config |
+          interfaces {
+              ge-0/0/0 {
+                  unit 0 {
+                      family inet {
+                          address 172.16.0.2/24;
+                      }
+                  }
+              }
+              ge-0/0/1 {
+                  unit 0 {
+                      family inet {
+                          address 5.6.7.1/24;
+                      }
+                  }
+              }
+          }
+          policy-options {
+              policy-statement direct {
+                  term d {
+                      from protocol direct;
+                      then accept;
+                  }
+              }
+          }
+          routing-options {
+              router-id 2.2.2.2;
+          }
+          protocols {
+              ospf {
+                  area 0.0.0.0 {
+                      interface ge-0/0/0.0;
+                  }
+                  export direct;
+              }
+              pim {
+                  interface fxp0.0 {
+                      disable;
+                  }
+                  interface ge-0/0/0.0 {
+                      mode dense;
+                  }
+                  interface ge-0/0/1.0 {
+                      mode dense;
+                  }
+              }
+          }
+  nodes:
+    rtr1:
+      kind: juniper_vjunosrouter
+      image: vrnetlab/juniper_vjunos-router:24.2R1-S2.5
+      mgmt-ipv4: 192.168.122.101
+      startup-config: *rtr1-config
+    rtr2:
+      kind: juniper_vjunosrouter
+      image: vrnetlab/juniper_vjunos-router:24.2R1-S2.5
+      mgmt-ipv4: 192.168.122.102
+      startup-config: *rtr2-config
+    h1:
+      kind: linux
+      image: ubuntu:noble
+      mgmt-ipv4: 192.168.122.51
+      exec:
+        - bash -c 'yes|unminimize'
+        - bash -c 'DEBIAN_FRONTEND=noninteractive apt-get install -y iproute2 git build-essential autoconf'
+        - bash -c 'ip addr add 1.2.3.4/24 dev eth1'
+        - bash -c 'git clone https://github.com/troglobit/mcjoin.git'
+        - bash -c 'cd mcjoin && ./autogen.sh && ./configure && make && make install-strip'
+        - bash -c 'mcjoin -i eth1 -f 1000 -t 3 -s &'
+    h2:
+      kind: linux
+      image: ubuntu:noble
+      mgmt-ipv4: 192.168.122.52
+      exec:
+        - bash -c 'yes|unminimize'
+        - bash -c 'DEBIAN_FRONTEND=noninteractive apt-get install -y iproute2 git build-essential autoconf'
+        - bash -c 'ip addr add 5.6.7.8/24 dev eth1'
+        - bash -c 'git clone https://github.com/troglobit/mcjoin.git'
+        - bash -c 'cd mcjoin && ./autogen.sh && ./configure && make && make install-strip'
+        - bash -c 'mcjoin -i eth1 -f 1000 &'
+  links:
+    - endpoints: ["rtr1:eth1", "rtr2:eth1"]
+    - endpoints: ["rtr1:eth2", "h1:eth1"]
+    - endpoints: ["rtr2:eth2", "h2:eth1"]
