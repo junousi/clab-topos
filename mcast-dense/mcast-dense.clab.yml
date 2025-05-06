@@ -27,14 +27,6 @@ topology:
                   }
               }
           }
-          policy-options {
-              policy-statement direct {
-                  term d {
-                      from protocol direct;
-                      then accept;
-                  }
-              }
-          }
           routing-options {
               router-id 1.1.1.1;
           }
@@ -42,8 +34,10 @@ topology:
               ospf {
                   area 0.0.0.0 {
                       interface ge-0/0/0.0;
+                      interface ge-0/0/1.0 {
+                          passive;
+                      }
                   }
-                  export direct;
               }
               pim {
                   interface fxp0.0 {
@@ -74,14 +68,6 @@ topology:
                   }
               }
           }
-          policy-options {
-              policy-statement direct {
-                  term d {
-                      from protocol direct;
-                      then accept;
-                  }
-              }
-          }
           routing-options {
               router-id 2.2.2.2;
           }
@@ -89,8 +75,10 @@ topology:
               ospf {
                   area 0.0.0.0 {
                       interface ge-0/0/0.0;
+                      interface ge-0/0/1.0 {
+                          passive;
+                      }
                   }
-                  export direct;
               }
               pim {
                   interface fxp0.0 {
