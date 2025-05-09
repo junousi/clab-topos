@@ -4,105 +4,25 @@ mgmt:
   bridge: virbr0
   ipv4-subnet: 192.168.122.0/24
 topology:
-  defaults:
-    config:
-      vars:
-        # Due to strict checking there doesn't seem to be a way to inline (embed)
-        # the configs into a YAML variable with a neat 0-space indent. In any case
-        # chucking the configs here to keep the "nodes:" section more compact.
-        rtr1-config: &rtr1-config |
-          interfaces {
-              ge-0/0/0 {
-                  unit 0 {
-                      family inet {
-                          address 172.16.0.1/24;
-                      }
-                  }
-              }
-              ge-0/0/1 {
-                  unit 0 {
-                      family inet {
-                          address 1.2.3.1/24;
-                      }
-                  }
-              }
-          }
-          routing-options {
-              router-id 1.1.1.1;
-          }
-          protocols {
-              ospf {
-                  area 0.0.0.0 {
-                      interface ge-0/0/0.0;
-                      interface ge-0/0/1.0 {
-                          passive;
-                      }
-                  }
-              }
-              pim {
-                  interface fxp0.0 {
-                      disable;
-                  }
-                  interface ge-0/0/0.0 {
-                      mode dense;
-                  }
-                  interface ge-0/0/1.0 {
-                      mode dense;
-                  }
-              }
-          }
-        rtr2-config: &rtr2-config |
-          interfaces {
-              ge-0/0/0 {
-                  unit 0 {
-                      family inet {
-                          address 172.16.0.2/24;
-                      }
-                  }
-              }
-              ge-0/0/1 {
-                  unit 0 {
-                      family inet {
-                          address 5.6.7.1/24;
-                      }
-                  }
-              }
-          }
-          routing-options {
-              router-id 2.2.2.2;
-          }
-          protocols {
-              ospf {
-                  area 0.0.0.0 {
-                      interface ge-0/0/0.0;
-                      interface ge-0/0/1.0 {
-                          passive;
-                      }
-                  }
-              }
-              pim {
-                  interface fxp0.0 {
-                      disable;
-                  }
-                  interface ge-0/0/0.0 {
-                      mode dense;
-                  }
-                  interface ge-0/0/1.0 {
-                      mode dense;
-                  }
-              }
-          }
   nodes:
     rtr1:
+      env:
+        RTR_CORE_CIDR: '172.16.0.1/24'
+        RTR_CUST_CIDR: '1.2.3.1/24'
+        RTR_ID: '1.1.1.1'
       kind: juniper_vjunosrouter
       image: vrnetlab/juniper_vjunos-router:24.2R1-S2.5
       mgmt-ipv4: 192.168.122.101
-      startup-config: *rtr1-config
+      startup-config: rtr-config.cfg
     rtr2:
+      env:
+        RTR_CORE_CIDR: '172.16.0.2/24'
+        RTR_CUST_CIDR: '5.6.7.1/24'
+        RTR_ID: '2.2.2.2'
       kind: juniper_vjunosrouter
       image: vrnetlab/juniper_vjunos-router:24.2R1-S2.5
       mgmt-ipv4: 192.168.122.102
-      startup-config: *rtr2-config
+      startup-config: rtr-config.cfg
     h1:
       kind: linux
       image: ubuntu:noble
