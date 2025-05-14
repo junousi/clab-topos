@@ -1,4 +1,4 @@
-----
+---
 name: ospf-pentagram
 mgmt:
   bridge: virbr0

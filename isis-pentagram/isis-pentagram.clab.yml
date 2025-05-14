@@ -1,0 +1,111 @@
+---
+name: isis-pentagram
+mgmt:
+  bridge: virbr0
+  ipv4-subnet: 192.168.122.0/24
+topology:
+  defaults:
+    config:
+      vars:
+        isis_inner_ifaces: &isis_inner_ifaces
+          - ge-0/0/0
+          - ge-0/0/1
+          - ge-0/0/2
+          - ge-0/0/3
+        isis_outer_ifaces: &isis_outer_ifaces
+          - ge-0/0/0
+          - ge-0/0/1
+    env:
+  kinds:
+    juniper_vjunosrouter:
+      image: vrnetlab/juniper_vjunos-router:24.2R1-S2.5
+      startup-config: rtr-config.cfg
+  nodes:
+    rtr1:
+      kind: juniper_vjunosrouter
+      env:
+        RTR_CORE_LO_ISO: 49.0001.0000.0000.0001.00
+      config:
+        vars:
+          isis_p2p_ifaces: *isis_inner_ifaces
+    rtr2:
+      kind: juniper_vjunosrouter
+      env:
+        RTR_CORE_LO_ISO: 49.0001.0000.0000.0002.00
+      config:
+        vars:
+          isis_p2p_ifaces: *isis_inner_ifaces
+    rtr3:
+      kind: juniper_vjunosrouter
+      env:
+        RTR_CORE_LO_ISO: 49.0001.0000.0000.0003.00
+      config:
+        vars:
+          isis_p2p_ifaces: *isis_inner_ifaces
+    rtr4:
+      kind: juniper_vjunosrouter
+      env:
+        RTR_CORE_LO_ISO: 49.0001.0000.0000.0004.00
+      config:
+        vars:
+          isis_p2p_ifaces: *isis_inner_ifaces
+    rtr5:
+      kind: juniper_vjunosrouter
+      env:
+        RTR_CORE_LO_ISO: 49.0001.0000.0000.0005.00
+      config:
+        vars:
+          isis_p2p_ifaces: *isis_inner_ifaces
+    rtr6:
+      kind: juniper_vjunosrouter
+      env:
+        RTR_CORE_LO_ISO: 49.0001.0000.0000.0006.00
+      config:
+        vars:
+          isis_p2p_ifaces: *isis_outer_ifaces
+    rtr7:
+      kind: juniper_vjunosrouter
+      env:
+        RTR_CORE_LO_ISO: 49.0001.0000.0000.0007.00
+      config:
+        vars:
+          isis_p2p_ifaces: *isis_outer_ifaces
+    rtr8:
+      kind: juniper_vjunosrouter
+      env:
+        RTR_CORE_LO_ISO: 49.0001.0000.0000.0008.00
+      config:
+        vars:
+          isis_p2p_ifaces: *isis_outer_ifaces
+    rtr9:
+      kind: juniper_vjunosrouter
+      env:
+        RTR_CORE_LO_ISO: 49.0001.0000.0000.0009.00
+      config:
+        vars:
+          isis_p2p_ifaces: *isis_outer_ifaces
+    rtr10:
+      kind: juniper_vjunosrouter
+      env:
+        RTR_CORE_LO_ISO: 49.0001.0000.0000.0010.00
+      config:
+        vars:
+          isis_p2p_ifaces: *isis_outer_ifaces
+  links:
+#inner
+    - endpoints: ["rtr1:eth1", "rtr2:eth1"]
+    - endpoints: ["rtr2:eth2", "rtr3:eth1"]
+    - endpoints: ["rtr3:eth2", "rtr4:eth1"]
+    - endpoints: ["rtr4:eth2", "rtr5:eth1"]
+    - endpoints: ["rtr5:eth2", "rtr1:eth2"]
+#outer
+    - endpoints: ["rtr1:eth3", "rtr6:eth1"]
+    - endpoints: ["rtr6:eth2", "rtr2:eth3"]
+    - endpoints: ["rtr2:eth4", "rtr7:eth1"]
+    - endpoints: ["rtr7:eth2", "rtr3:eth3"]
+    - endpoints: ["rtr3:eth4", "rtr8:eth1"]
+    - endpoints: ["rtr8:eth2", "rtr4:eth3"]
+    - endpoints: ["rtr4:eth4", "rtr9:eth1"]
+    - endpoints: ["rtr9:eth2", "rtr5:eth3"]
+    - endpoints: ["rtr5:eth4", "rtr10:eth1"]
+    - endpoints: ["rtr10:eth2", "rtr1:eth4"]
