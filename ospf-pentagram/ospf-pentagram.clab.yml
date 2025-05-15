@@ -88,6 +88,12 @@ topology:
         RTR_CORE1_CIDR: 172.17.0.33/30
         RTR_CORE2_CIDR: 172.17.0.37/30
         RTR_ID: 10.10.10.10
+    h1:
+      kind: linux
+      image: ubuntu:noble
+    h2:
+      kind: linux
+      image: ubuntu:noble
   links:
     - endpoints: ["rtr1:eth1", "rtr2:eth1"]
     - endpoints: ["rtr2:eth2", "rtr3:eth1"]
@@ -104,3 +110,5 @@ topology:
     - endpoints: ["rtr9:eth2", "rtr5:eth3"]
     - endpoints: ["rtr5:eth4", "rtr10:eth1"]
     - endpoints: ["rtr10:eth2", "rtr1:eth4"]
+    - endpoints: ["rtr6:eth3", "h1:eth1"]
+    - endpoints: ["rtr9:eth3", "h2:eth1"]

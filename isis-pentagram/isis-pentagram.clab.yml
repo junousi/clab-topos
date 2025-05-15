@@ -91,14 +91,20 @@ topology:
       config:
         vars:
           isis_p2p_ifaces: *isis_outer_ifaces
+    h1:
+      kind: linux
+      image: ubuntu:noble
+    h2:
+      kind: linux
+      image: ubuntu:noble
   links:
-#inner
+    #inner
     - endpoints: ["rtr1:eth1", "rtr2:eth1"]
     - endpoints: ["rtr2:eth2", "rtr3:eth1"]
     - endpoints: ["rtr3:eth2", "rtr4:eth1"]
     - endpoints: ["rtr4:eth2", "rtr5:eth1"]
     - endpoints: ["rtr5:eth2", "rtr1:eth2"]
-#outer
+    #outer
     - endpoints: ["rtr1:eth3", "rtr6:eth1"]
     - endpoints: ["rtr6:eth2", "rtr2:eth3"]
     - endpoints: ["rtr2:eth4", "rtr7:eth1"]
@@ -109,3 +115,6 @@ topology:
     - endpoints: ["rtr9:eth2", "rtr5:eth3"]
     - endpoints: ["rtr5:eth4", "rtr10:eth1"]
     - endpoints: ["rtr10:eth2", "rtr1:eth4"]
+    # test nodes
+    - endpoints: ["rtr6:eth3", "h1:eth1"]
+    - endpoints: ["rtr9:eth3", "h2:eth1"]
