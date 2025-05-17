@@ -1,0 +1,30 @@
+---
+name: ospf-nssa
+mgmt:
+  bridge: virbr0
+  ipv4-subnet: 192.168.122.0/24
+topology:
+  kinds:
+    juniper_vjunosrouter:
+      image: vrnetlab/juniper_vjunos-router:24.2R1-S2.5
+  nodes:
+    r1:
+      kind: juniper_vjunosrouter
+      mgmt-ipv4: 192.168.122.101
+      startup-config: r1.cfg
+    r2:
+      kind: juniper_vjunosrouter
+      mgmt-ipv4: 192.168.122.102
+      startup-config: r2.cfg
+    r3:
+      kind: juniper_vjunosrouter
+      mgmt-ipv4: 192.168.122.103
+      startup-config: r3.cfg
+    r4:
+      kind: juniper_vjunosrouter
+      mgmt-ipv4: 192.168.122.104
+      startup-config: r4.cfg
+  links:
+    - endpoints: ["r1:eth1", "r2:eth1"]
+    - endpoints: ["r2:eth2", "r3:eth1"]
+    - endpoints: ["r2:eth3", "r4:eth1"]
