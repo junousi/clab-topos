@@ -1,0 +1,129 @@
+---
+name: multiprotocol-pentagram-unnumbered
+mgmt:
+  bridge: virbr0
+  ipv4-subnet: 192.168.122.0/24
+topology:
+  defaults:
+    config:
+      vars:
+        inner_node_ifaces: &inner_node_ifaces
+          - ge-0/0/0
+          - ge-0/0/1
+          - ge-0/0/2
+          - ge-0/0/3
+        outer_node_ifaces: &outer_node_ifaces
+          - ge-0/0/0
+          - ge-0/0/1
+        outer_node_ext_ifaces: &outer_node_ext_ifaces
+          - ge-0/0/2
+        ibgp_mesh: &ibgp_mesh
+          - 6.6.6.6
+          - 7.7.7.7
+          - 8.8.8.8
+          - 9.9.9.9
+          - 10.10.10.10
+        local_as: 65547
+  kinds:
+    juniper_vjunosrouter:
+      image: vrnetlab/juniper_vjunos-router:24.2R1-S2.5
+      startup-config: rtr-config.cfg
+  nodes:
+    rtr1:
+      kind: juniper_vjunosrouter
+      config:
+        vars:
+          lo_inet: 1.1.1.1
+          ospf_p2p_ifaces: *inner_node_ifaces
+    rtr2:
+      kind: juniper_vjunosrouter
+      config:
+        vars:
+          lo_inet: 2.2.2.2
+          ospf_p2p_ifaces: *inner_node_ifaces
+    rtr3:
+      kind: juniper_vjunosrouter
+      config:
+        vars:
+          lo_inet: 3.3.3.3
+          ospf_p2p_ifaces: *inner_node_ifaces
+    rtr4:
+      kind: juniper_vjunosrouter
+      config:
+        vars:
+          lo_inet: 4.4.4.4
+          ospf_p2p_ifaces: *inner_node_ifaces
+    rtr5:
+      kind: juniper_vjunosrouter
+      config:
+        vars:
+          lo_inet: 5.5.5.5
+          ospf_p2p_ifaces: *inner_node_ifaces
+    rtr6:
+      kind: juniper_vjunosrouter
+      config:
+        vars:
+          lo_inet: 6.6.6.6
+          ospf_p2p_ifaces: *outer_node_ifaces
+          # TODO
+          # Instead of replicating vars (many more going forward), add some kind of
+          # feature flag for PE routers for simpler control of what interfaces,
+          # i/eBGP parameters etc. they should have.
+          outer_node_ibgp_mesh: *ibgp_mesh
+          ext_ifaces: *outer_node_ext_ifaces
+    rtr7:
+      kind: juniper_vjunosrouter
+      config:
+        vars:
+          lo_inet: 7.7.7.7
+          ospf_p2p_ifaces: *outer_node_ifaces
+          outer_node_ibgp_mesh: *ibgp_mesh
+    rtr8:
+      kind: juniper_vjunosrouter
+      config:
+        vars:
+          lo_inet: 8.8.8.8
+          ospf_p2p_ifaces: *outer_node_ifaces
+          outer_node_ibgp_mesh: *ibgp_mesh
+    rtr9:
+      kind: juniper_vjunosrouter
+      config:
+        vars:
+          lo_inet: 9.9.9.9
+          ospf_p2p_ifaces: *outer_node_ifaces
+          outer_node_ibgp_mesh: *ibgp_mesh
+          ext_ifaces: *outer_node_ext_ifaces
+    rtr10:
+      kind: juniper_vjunosrouter
+      config:
+        vars:
+          lo_inet: 10.10.10.10
+          ospf_p2p_ifaces: *outer_node_ifaces
+          outer_node_ibgp_mesh: *ibgp_mesh
+    h1:
+      kind: linux
+      image: ubuntu:noble
+    h2:
+      kind: linux
+      image: ubuntu:noble
+  links:
+    #inner
+    - endpoints: ["rtr1:eth1", "rtr2:eth1"]
+    - endpoints: ["rtr2:eth2", "rtr3:eth1"]
+    - endpoints: ["rtr3:eth2", "rtr4:eth1"]
+    - endpoints: ["rtr4:eth2", "rtr5:eth1"]
+    - endpoints: ["rtr5:eth2", "rtr1:eth2"]
+    #outer
+    - endpoints: ["rtr1:eth3", "rtr6:eth1"]
+    - endpoints: ["rtr6:eth2", "rtr2:eth3"]
+    - endpoints: ["rtr2:eth4", "rtr7:eth1"]
+    - endpoints: ["rtr7:eth2", "rtr3:eth3"]
+    - endpoints: ["rtr3:eth4", "rtr8:eth1"]
+    - endpoints: ["rtr8:eth2", "rtr4:eth3"]
+    - endpoints: ["rtr4:eth4", "rtr9:eth1"]
+    - endpoints: ["rtr9:eth2", "rtr5:eth3"]
+    - endpoints: ["rtr5:eth4", "rtr10:eth1"]
+    - endpoints: ["rtr10:eth2", "rtr1:eth4"]
+    # test nodes
+    - endpoints: ["rtr6:eth3", "h1:eth1"]
+    - endpoints: ["rtr9:eth3", "h2:eth1"]

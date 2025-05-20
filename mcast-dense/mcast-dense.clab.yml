@@ -15,7 +15,7 @@ topology:
         RTR_CUST_CIDR: 1.2.3.1/24
         RTR_ID: 1.1.1.1
       kind: juniper_vjunosrouter
-      mgmt-ipv4: 192.168.122.102
+      mgmt-ipv4: 192.168.122.101
     rtr2:
       env:
         RTR_CORE_CIDR: 172.16.0.2/24
