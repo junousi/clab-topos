@@ -100,20 +100,34 @@ topology:
           lo_inet: 10.10.10.10
           ospf_p2p_ifaces: *outer_node_ifaces
           outer_node_ibgp_mesh: *ibgp_mesh
-    h1:
-      kind: linux
-      image: ubuntu:noble
-    h2:
-      kind: linux
-      image: ubuntu:noble
+    ce1:
+      kind: nokia_srlinux
+      image: ghcr.io/nokia/srlinux:25.3.1
+      startup-config: ce.cfg
+      config:
+        vars:
+          ebgp_local_address: 100.100.100.100
+          ebgp_local_as: 100
+          ebgp_peer_as: 150
+          ebgp_peer_address: 100.100.100.101
+    ce2:
+      kind: nokia_srlinux
+      image: ghcr.io/nokia/srlinux:25.3.1
+      startup-config: ce.cfg
+      config:
+        vars:
+          ebgp_local_address: 200.200.200.200
+          ebgp_local_as: 200
+          ebgp_peer_as: 150
+          ebgp_peer_address: 200.200.200.201
   links:
-    #inner
+    # inner (P)
     - endpoints: ["rtr1:eth1", "rtr2:eth1"]
     - endpoints: ["rtr2:eth2", "rtr3:eth1"]
     - endpoints: ["rtr3:eth2", "rtr4:eth1"]
     - endpoints: ["rtr4:eth2", "rtr5:eth1"]
     - endpoints: ["rtr5:eth2", "rtr1:eth2"]
-    #outer
+    # outer (PE)
     - endpoints: ["rtr1:eth3", "rtr6:eth1"]
     - endpoints: ["rtr6:eth2", "rtr2:eth3"]
     - endpoints: ["rtr2:eth4", "rtr7:eth1"]
@@ -124,6 +138,6 @@ topology:
     - endpoints: ["rtr9:eth2", "rtr5:eth3"]
     - endpoints: ["rtr5:eth4", "rtr10:eth1"]
     - endpoints: ["rtr10:eth2", "rtr1:eth4"]
-    # test nodes
-    - endpoints: ["rtr6:eth3", "h1:eth1"]
-    - endpoints: ["rtr9:eth3", "h2:eth1"]
+    # Customer Equipment
+    - endpoints: ["rtr6:eth3", "ce1:ethernet-1/1"]
+    - endpoints: ["rtr9:eth3", "ce2:ethernet-1/1"]
