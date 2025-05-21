@@ -10,107 +10,56 @@ topology:
     startup-config: __clabNodeName__.cfg
   nodes:
     espoo1:
-      mgmt-ipv4: 192.168.42.100
     helsinki1:
-      mgmt-ipv4: 192.168.42.101
     oulu1:
-      mgmt-ipv4: 192.168.42.102
     tampere2:
-      mgmt-ipv4: 192.168.42.103
     stockholm1:
-      mgmt-ipv4: 192.168.42.104
     sodankyla2:
-      mgmt-ipv4: 192.168.42.105
     kalix1:
-      mgmt-ipv4: 192.168.42.106
     sundsvall1:
-      mgmt-ipv4: 192.168.42.107
     kajaani1:
-      mgmt-ipv4: 192.168.42.108
     kajaani2:
-      mgmt-ipv4: 192.168.42.109
     espoo2:
-      mgmt-ipv4: 192.168.42.110
     helsinki2:
-      mgmt-ipv4: 192.168.42.111
     turku1:
-      mgmt-ipv4: 192.168.42.112
     hameenlinna1:
-      mgmt-ipv4: 192.168.42.113
     hameenlinna2:
-      mgmt-ipv4: 192.168.42.114
     tampere1:
-      mgmt-ipv4: 192.168.42.115
     helsinki3:
-      mgmt-ipv4: 192.168.42.116
     helsinki4:
-      mgmt-ipv4: 192.168.42.117
     lahti1:
-      mgmt-ipv4: 192.168.42.118
     porvoo1:
-      mgmt-ipv4: 192.168.42.119
     joensuu1:
-      mgmt-ipv4: 192.168.42.120
     joensuu2:
-      mgmt-ipv4: 192.168.42.121
     kuopio2:
-      mgmt-ipv4: 192.168.42.122
     mikkeli1:
-      mgmt-ipv4: 192.168.42.123
     jyvaskyla1:
-      mgmt-ipv4: 192.168.42.124
     jyvaskyla2:
-      mgmt-ipv4: 192.168.42.125
     kuopio1:
-      mgmt-ipv4: 192.168.42.126
     seinajoki1:
-      mgmt-ipv4: 192.168.42.127
     mikkeli2:
-      mgmt-ipv4: 192.168.42.128
     oulu2:
-      mgmt-ipv4: 192.168.42.129
     rovaniemi2:
-      mgmt-ipv4: 192.168.42.130
     kemi1:
-      mgmt-ipv4: 192.168.42.131
     vaasa1:
-      mgmt-ipv4: 192.168.42.132
     kemi2:
-      mgmt-ipv4: 192.168.42.133
     rovaniemi1:
-      mgmt-ipv4: 192.168.42.134
     kilpisjarvi1:
-      mgmt-ipv4: 192.168.42.135
     kilpisjarvi2:
-      mgmt-ipv4: 192.168.42.136
     kokkola1:
-      mgmt-ipv4: 192.168.42.137
     kokkola2:
-      mgmt-ipv4: 192.168.42.138
     kotka1:
-      mgmt-ipv4: 192.168.42.139
     kotka2:
-      mgmt-ipv4: 192.168.42.140
     lappeenranta1:
-      mgmt-ipv4: 192.168.42.141
     lahti2:
-      mgmt-ipv4: 192.168.42.142
     lappeenranta2:
-      mgmt-ipv4: 192.168.42.143
     pori1:
-      mgmt-ipv4: 192.168.42.144
     pori2:
-      mgmt-ipv4: 192.168.42.145
     rauma1:
-      mgmt-ipv4: 192.168.42.146
     vaasa2:
-      mgmt-ipv4: 192.168.42.147
     turku2:
-      mgmt-ipv4: 192.168.42.148
     sodankyla1:
-      mgmt-ipv4: 192.168.42.149
     seinajoki2:
-      mgmt-ipv4: 192.168.42.150
   links:
     - endpoints: ["espoo1:et-0/0/1", "espoo2:et-0/0/2"]
     - endpoints: ["espoo1:et-0/0/0", "helsinki2:et-0/0/1"]
