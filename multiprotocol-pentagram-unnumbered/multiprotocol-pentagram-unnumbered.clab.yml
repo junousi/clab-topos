@@ -15,8 +15,6 @@ topology:
         outer_node_ifaces: &outer_node_ifaces
           - ge-0/0/0
           - ge-0/0/1
-        outer_node_ext_ifaces: &outer_node_ext_ifaces
-          - ge-0/0/2
         ibgp_mesh: &ibgp_mesh
           - 6.6.6.6
           - 7.7.7.7
@@ -69,37 +67,45 @@ topology:
           # Instead of replicating vars (many more going forward), add some kind of
           # feature flag for PE routers for simpler control of what interfaces,
           # i/eBGP parameters etc. they should have.
-          outer_node_ibgp_mesh: *ibgp_mesh
-          ext_ifaces: *outer_node_ext_ifaces
+          ibgp_mesh: *ibgp_mesh
+          ebgp_interface: ge-0/0/2
+          ebgp_local_as: 150
+          ebgp_local_address: 100.100.100.101
+          ebgp_peer_as: 100
+          ebgp_neighbor: 100.100.100.100
     rtr7:
       kind: juniper_vjunosrouter
       config:
         vars:
           lo_inet: 7.7.7.7
           ospf_p2p_ifaces: *outer_node_ifaces
-          outer_node_ibgp_mesh: *ibgp_mesh
+          ibgp_mesh: *ibgp_mesh
     rtr8:
       kind: juniper_vjunosrouter
       config:
         vars:
           lo_inet: 8.8.8.8
           ospf_p2p_ifaces: *outer_node_ifaces
-          outer_node_ibgp_mesh: *ibgp_mesh
+          ibgp_mesh: *ibgp_mesh
     rtr9:
       kind: juniper_vjunosrouter
       config:
         vars:
           lo_inet: 9.9.9.9
           ospf_p2p_ifaces: *outer_node_ifaces
-          outer_node_ibgp_mesh: *ibgp_mesh
-          ext_ifaces: *outer_node_ext_ifaces
+          ibgp_mesh: *ibgp_mesh
+          ebgp_interface: ge-0/0/2
+          ebgp_local_as: 150
+          ebgp_local_address: 200.200.200.201
+          ebgp_peer_as: 200
+          ebgp_neighbor: 200.200.200.200
     rtr10:
       kind: juniper_vjunosrouter
       config:
         vars:
           lo_inet: 10.10.10.10
           ospf_p2p_ifaces: *outer_node_ifaces
-          outer_node_ibgp_mesh: *ibgp_mesh
+          ibgp_mesh: *ibgp_mesh
     ce1:
       kind: nokia_srlinux
       image: ghcr.io/nokia/srlinux:25.3.1
