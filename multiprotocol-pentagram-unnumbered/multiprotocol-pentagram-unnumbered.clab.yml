@@ -73,6 +73,8 @@ topology:
           ebgp_local_address: 100.100.100.101
           ebgp_peer_as: 100
           ebgp_neighbor: 100.100.100.100
+          ebgp_advertise_oneshot_cidr: 6.5.4.3/32
+          ebgp_advertise_oneshot_tag: 3550
     rtr7:
       kind: juniper_vjunosrouter
       config:
@@ -99,6 +101,8 @@ topology:
           ebgp_local_address: 200.200.200.201
           ebgp_peer_as: 200
           ebgp_neighbor: 200.200.200.200
+          ebgp_advertise_oneshot_cidr: 9.8.7.6/32
+          ebgp_advertise_oneshot_tag: 3550
     rtr10:
       kind: juniper_vjunosrouter
       config:
@@ -116,6 +120,7 @@ topology:
           ebgp_local_as: 100
           ebgp_peer_as: 150
           ebgp_peer_address: 100.100.100.101
+          ebgp_advertise_oneshot_cidr: 1.2.3.4/32
     ce2:
       kind: nokia_srlinux
       image: ghcr.io/nokia/srlinux:25.3.1
@@ -126,6 +131,7 @@ topology:
           ebgp_local_as: 200
           ebgp_peer_as: 150
           ebgp_peer_address: 200.200.200.201
+          ebgp_advertise_oneshot_cidr: 2.3.4.5/32
   links:
     # inner (P)
     - endpoints: ["rtr1:eth1", "rtr2:eth1"]
