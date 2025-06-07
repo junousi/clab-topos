@@ -12,32 +12,35 @@ topology:
     rtr1:
       kind: juniper_vjunosrouter
       mgmt-ipv4: 192.168.122.101
-      env:
-        RTR_CORE1_CIDR: 172.16.0.1/30
-        RTR_CORE2_CIDR: 172.16.0.6/30
-        RTR_CUST_CIDR: 1.2.3.1/24
-        RTR_ID: 1.1.1.1
-        RTR_PIM_RP_TYPE: static
-        RTR_PIM_RP_ADDR: 3.3.3.3
+      config:
+        vars:
+          RTR_CORE1_CIDR: 172.16.0.1/30
+          RTR_CORE2_CIDR: 172.16.0.6/30
+          RTR_CUST_CIDR: 1.2.3.1/24
+          RTR_ID: 1.1.1.1
+          RTR_PIM_RP_TYPE: static
+          RTR_PIM_RP_ADDR: 3.3.3.3
     rtr2:
       kind: juniper_vjunosrouter
       mgmt-ipv4: 192.168.122.102
-      env:
-        RTR_CORE1_CIDR: 172.16.0.2/30
-        RTR_CORE2_CIDR: 172.16.0.10/30
-        RTR_CUST_CIDR: 5.6.7.1/24
-        RTR_ID: 2.2.2.2
-        RTR_PIM_RP_TYPE: static
-        RTR_PIM_RP_ADDR: 3.3.3.3
+      config:
+        vars:
+          RTR_CORE1_CIDR: 172.16.0.2/30
+          RTR_CORE2_CIDR: 172.16.0.10/30
+          RTR_CUST_CIDR: 5.6.7.1/24
+          RTR_ID: 2.2.2.2
+          RTR_PIM_RP_TYPE: static
+          RTR_PIM_RP_ADDR: 3.3.3.3
     rtr3:
       kind: juniper_vjunosrouter
       mgmt-ipv4: 192.168.122.103
-      env:
-        RTR_CORE1_CIDR: 172.16.0.5/30
-        RTR_CORE2_CIDR: 172.16.0.9/30
-        RTR_ID: 3.3.3.3
-        RTR_PIM_RP_TYPE: local
-        RTR_PIM_RP_ADDR: 3.3.3.3
+      config:
+        vars:
+          RTR_CORE1_CIDR: 172.16.0.5/30
+          RTR_CORE2_CIDR: 172.16.0.9/30
+          RTR_ID: 3.3.3.3
+          RTR_PIM_RP_TYPE: local
+          RTR_PIM_RP_ADDR: 3.3.3.3
     h1:
       kind: linux
       image: ubuntu:noble
