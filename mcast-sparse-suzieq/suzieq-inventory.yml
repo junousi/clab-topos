@@ -1,0 +1,25 @@
+---
+sources:
+  - name: routers
+    hosts:
+      - url: ssh://192.168.122.101
+      - url: ssh://192.168.122.102
+      - url: ssh://192.168.122.103
+devices:
+  - name: default_settings
+    transport: ssh
+    port: 22
+    ignore-known-hosts: true
+    # Since junos-mx has hardcoded 'protocol direct' on the show route command,
+    # workaround this by pinning to junos-qfx.
+    # Some work ongoing to add IGMP: https://github.com/netenglabs/suzieq/pull/762
+    devtype: junos-qfx
+auths:
+  - name: default_credentials
+    username: admin
+    password: env:JUNOS_PASSWORD
+namespaces:
+  - name: mcast_sparse
+    source: routers
+    device: default_settings
+    auth: default_credentials
