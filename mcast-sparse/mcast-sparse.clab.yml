@@ -47,7 +47,7 @@ topology:
       mgmt-ipv4: 192.168.122.51
       exec:
         - bash -c 'yes|unminimize'
-        - bash -c 'DEBIAN_FRONTEND=noninteractive apt-get install -y iproute2 git build-essential autoconf'
+        - bash -c 'DEBIAN_FRONTEND=noninteractive apt-get install -y iproute2 git build-essential autoconf lldpd'
         - bash -c 'ip addr add 1.2.3.4/24 dev eth1'
         - bash -c 'git clone https://github.com/troglobit/mcjoin.git'
         - bash -c 'cd mcjoin && ./autogen.sh && ./configure && make && make install-strip'
@@ -58,7 +58,7 @@ topology:
       mgmt-ipv4: 192.168.122.52
       exec:
         - bash -c 'yes|unminimize'
-        - bash -c 'DEBIAN_FRONTEND=noninteractive apt-get install -y iproute2 git build-essential autoconf'
+        - bash -c 'DEBIAN_FRONTEND=noninteractive apt-get install -y iproute2 git build-essential autoconf lldpd'
         - bash -c 'ip addr add 5.6.7.8/24 dev eth1'
         - bash -c 'git clone https://github.com/troglobit/mcjoin.git'
         - bash -c 'cd mcjoin && ./autogen.sh && ./configure && make && make install-strip'
