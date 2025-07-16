@@ -1,0 +1,164 @@
+---
+name: ospf-pentagram
+prefix: ''
+mgmt:
+  bridge: virbr0
+  ipv4-subnet: 192.168.122.0/24
+topology:
+  kinds:
+    juniper_vjunosrouter:
+      image: vrnetlab/juniper_vjunos-router:24.2R1-S2.5
+  nodes:
+    rtr1:
+      kind: juniper_vjunosrouter
+      startup-config: rtr-config-inner.cfg
+      config:
+        vars:
+          RTR_CORE1_CIDR: 172.16.0.1/30
+          RTR_CORE2_CIDR: 172.16.0.18/30
+          RTR_CORE3_CIDR: 172.17.0.2/30
+          RTR_CORE4_CIDR: 172.17.0.38/30
+          RTR_ID: 1.1.1.1
+          RTR_PIM_RP_TYPE: static
+          RTR_PIM_RP_ADDR: 3.3.3.3
+    rtr2:
+      kind: juniper_vjunosrouter
+      startup-config: rtr-config-inner.cfg
+      config:
+        vars:
+          RTR_CORE1_CIDR: 172.16.0.2/30
+          RTR_CORE2_CIDR: 172.16.0.5/30
+          RTR_CORE3_CIDR: 172.17.0.6/30
+          RTR_CORE4_CIDR: 172.17.0.10/30
+          RTR_ID: 2.2.2.2
+          RTR_PIM_RP_TYPE: static
+          RTR_PIM_RP_ADDR: 3.3.3.3
+    rtr3:
+      kind: juniper_vjunosrouter
+      startup-config: rtr-config-inner.cfg
+      config:
+        vars:
+          RTR_CORE1_CIDR: 172.16.0.6/30
+          RTR_CORE2_CIDR: 172.16.0.9/30
+          RTR_CORE3_CIDR: 172.17.0.14/30
+          RTR_CORE4_CIDR: 172.17.0.18/30
+          RTR_ID: 3.3.3.3
+          RTR_PIM_RP_TYPE: local
+          RTR_PIM_RP_ADDR: 3.3.3.3
+    rtr4:
+      kind: juniper_vjunosrouter
+      startup-config: rtr-config-inner.cfg
+      config:
+        vars:
+          RTR_CORE1_CIDR: 172.16.0.10/30
+          RTR_CORE2_CIDR: 172.16.0.13/30
+          RTR_CORE3_CIDR: 172.17.0.22/30
+          RTR_CORE4_CIDR: 172.17.0.26/30
+          RTR_ID: 4.4.4.4
+          RTR_PIM_RP_TYPE: static
+          RTR_PIM_RP_ADDR: 3.3.3.3
+    rtr5:
+      kind: juniper_vjunosrouter
+      startup-config: rtr-config-inner.cfg
+      config:
+        vars:
+          RTR_CORE1_CIDR: 172.16.0.14/30
+          RTR_CORE2_CIDR: 172.16.0.17/30
+          RTR_CORE3_CIDR: 172.17.0.30/30
+          RTR_CORE4_CIDR: 172.17.0.34/30
+          RTR_ID: 5.5.5.5
+          RTR_PIM_RP_TYPE: static
+          RTR_PIM_RP_ADDR: 3.3.3.3
+    rtr6:
+      kind: juniper_vjunosrouter
+      startup-config: rtr-config-outer.cfg
+      config:
+        vars:
+          RTR_CORE1_CIDR: 172.17.0.1/30
+          RTR_CORE2_CIDR: 172.17.0.5/30
+          RTR_CUST_CIDR: 1.2.3.1/24
+          RTR_ID: 6.6.6.6
+          RTR_PIM_RP_TYPE: static
+          RTR_PIM_RP_ADDR: 3.3.3.3
+    rtr7:
+      kind: juniper_vjunosrouter
+      startup-config: rtr-config-outer.cfg
+      config:
+        vars:
+          RTR_CORE1_CIDR: 172.17.0.9/30
+          RTR_CORE2_CIDR: 172.17.0.13/30
+          RTR_ID: 7.7.7.7
+          RTR_PIM_RP_TYPE: static
+          RTR_PIM_RP_ADDR: 3.3.3.3
+    rtr8:
+      kind: juniper_vjunosrouter
+      startup-config: rtr-config-outer.cfg
+      config:
+        vars:
+          RTR_CORE1_CIDR: 172.17.0.17/30
+          RTR_CORE2_CIDR: 172.17.0.21/30
+          RTR_ID: 8.8.8.8
+          RTR_PIM_RP_TYPE: static
+          RTR_PIM_RP_ADDR: 3.3.3.3
+    rtr9:
+      kind: juniper_vjunosrouter
+      startup-config: rtr-config-outer.cfg
+      config:
+        vars:
+          RTR_CORE1_CIDR: 172.17.0.25/30
+          RTR_CORE2_CIDR: 172.17.0.29/30
+          RTR_CUST_CIDR: 5.6.7.1/24
+          RTR_ID: 9.9.9.9
+          RTR_PIM_RP_TYPE: static
+          RTR_PIM_RP_ADDR: 3.3.3.3
+    rtr10:
+      kind: juniper_vjunosrouter
+      startup-config: rtr-config-outer.cfg
+      config:
+        vars:
+          RTR_CORE1_CIDR: 172.17.0.33/30
+          RTR_CORE2_CIDR: 172.17.0.37/30
+          RTR_ID: 10.10.10.10
+          RTR_PIM_RP_TYPE: static
+          RTR_PIM_RP_ADDR: 3.3.3.3
+    h1:
+      kind: linux
+      image: ubuntu:noble
+      mgmt-ipv4: 192.168.122.51
+      # TODO make a deb pkg out of this already
+      exec:
+        - bash -c 'yes|unminimize'
+        - bash -c 'DEBIAN_FRONTEND=noninteractive apt-get install -y iproute2 git build-essential autoconf lldpd'
+        - bash -c 'ip addr add 1.2.3.4/24 dev eth1'
+        - bash -c 'git clone https://github.com/troglobit/mcjoin.git'
+        - bash -c 'cd mcjoin && ./autogen.sh && ./configure && make && make install-strip'
+        - bash -c 'mcjoin -i eth1 -f 1000 -t 3 -s &'
+    h2:
+      kind: linux
+      image: ubuntu:noble
+      mgmt-ipv4: 192.168.122.52
+      exec:
+        - bash -c 'yes|unminimize'
+        - bash -c 'DEBIAN_FRONTEND=noninteractive apt-get install -y iproute2 git build-essential autoconf lldpd'
+        - bash -c 'ip addr add 5.6.7.8/24 dev eth1'
+        - bash -c 'git clone https://github.com/troglobit/mcjoin.git'
+        - bash -c 'cd mcjoin && ./autogen.sh && ./configure && make && make install-strip'
+        - bash -c 'mcjoin -i eth1 -f 1000 &'
+  links:
+    - endpoints: ["rtr1:eth1", "rtr2:eth1"]
+    - endpoints: ["rtr2:eth2", "rtr3:eth1"]
+    - endpoints: ["rtr3:eth2", "rtr4:eth1"]
+    - endpoints: ["rtr4:eth2", "rtr5:eth1"]
+    - endpoints: ["rtr5:eth2", "rtr1:eth2"]
+    - endpoints: ["rtr1:eth3", "rtr6:eth1"]
+    - endpoints: ["rtr6:eth2", "rtr2:eth3"]
+    - endpoints: ["rtr2:eth4", "rtr7:eth1"]
+    - endpoints: ["rtr7:eth2", "rtr3:eth3"]
+    - endpoints: ["rtr3:eth4", "rtr8:eth1"]
+    - endpoints: ["rtr8:eth2", "rtr4:eth3"]
+    - endpoints: ["rtr4:eth4", "rtr9:eth1"]
+    - endpoints: ["rtr9:eth2", "rtr5:eth3"]
+    - endpoints: ["rtr5:eth4", "rtr10:eth1"]
+    - endpoints: ["rtr10:eth2", "rtr1:eth4"]
+    - endpoints: ["rtr6:eth3", "h1:eth1"]
+    - endpoints: ["rtr9:eth3", "h2:eth1"]
