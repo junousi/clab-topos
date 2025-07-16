@@ -1,4 +1,4 @@
-# Suzieq notes
+# OSPF pentagram
 
 ## Topology
 
@@ -19,9 +19,11 @@ SRC       \.----./      \.----./      RECV
           '----'          '----'
 ```
 
-## RPT
+## Suzieq notes
 
-In certain cases core ring is fully traversed to reach the Rendesvouz Point.
+### RPT
+
+In certain cases core ring is fully traversed in the Root Path Tree to reach the Rendesvouz Point.
 
 ```
 suzieq> route show protocol=pim prefixlen='64'
@@ -35,7 +37,7 @@ suzieq> route show protocol=pim prefixlen='64'
 6  mcast_sparse     rtr9  inet  225.1.2.3,1.2.3.4/64         []   []      pim                105       0  multicast (ipv4) composite
 ```
 
-## SPT
+### SPT
 
 ```
 suzieq> route show protocol=pim prefixlen='64'
@@ -45,3 +47,7 @@ suzieq> route show protocol=pim prefixlen='64'
 2  mcast_sparse     rtr6  inet  225.1.2.3,1.2.3.4/64         []   []      pim                105       0  multicast (ipv4) composite
 3  mcast_sparse     rtr9  inet  225.1.2.3,1.2.3.4/64         []   []      pim                105       0  multicast (ipv4) composite
 ```
+
+Plotting a graph for the Sortest Path Tree:
+
+<img src="shortest-path-graph.png" width="80%" alt="Shortest path tree">
